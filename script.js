@@ -1250,3 +1250,21 @@ restartButton.addEventListener('click', startGame);
 
 // Start the game when the page loads
 startGame();
+
+
+// Firebase configuration (zastąp swoimi danymi z konsoli Firebase)
+const firebaseConfig = {
+  apiKey: "AIzaSyDdrwDwaw48w1BQVf17u_SEW6kJMdHxoyY", 
+  authDomain: "globeguess-42dcc.firebaseapp.com",
+  projectId: "globeguess-42dcc",
+  storageBucket: "globeguess-42dcc.firebasestorage.app",
+  messagingSenderId: "494943387602",
+  appId: "1:494943387602:web:37a76e7720d86cadb5920b",
+  measurementId: "G-D79VNBEQ41"
+};
+e7720d86cadb5920b",
+  measurementId: "G-D79VNBEQ41"
+// Initialize Firebase
+const app = firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const firestore = firebase.firestore();
