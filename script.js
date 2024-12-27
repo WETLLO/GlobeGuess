@@ -1262,9 +1262,68 @@ const firebaseConfig = {
   appId: "1:494943387602:web:37a76e7720d86cadb5920b",
   measurementId: "G-D79VNBEQ41"
 };
-e7720d86cadb5920b",
-  measurementId: "G-D79VNBEQ41"
+
 // Initialize Firebase
 const app = firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const firestore = firebase.firestore();
+
+// Zmienne formularzy
+const loginForm = document.getElementById('login-form');
+const registerForm = document.getElementById('register-form');
+
+// Funkcja rejestracji użytkownika
+document.getElementById('register-button').addEventListener('click', () => {
+    const email = document.getElementById('register-email').value;
+    const password = document.getElementById('register-password').value;
+
+    firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            console.log('Zarejestrowano: ', user.email);
+            loginForm.style.display = 'block';
+            registerForm.style.display = 'none';
+        })
+        .catch((error) => {
+            console.error('Błąd rejestracji: ', error.message);
+        });
+});
+
+// Funkcja logowania użytkownika
+document.getElementById('login-button').addEventListener('click', () => {
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-password').value;
+
+    firebase.auth().signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            console.log('Zalogowano: ', user.email);
+            startGame();  // Uruchamiamy grę po udanym logowaniu
+        })
+        .catch((error) => {
+            console.error('Błąd logowania: ', error.message);
+        });
+});
+
+// Pokazanie formularza rejestracji
+document.getElementById('show-register').addEventListener('click', () => {
+    loginForm.style.display = 'none';
+    registerForm.style.display = 'block';
+});
+
+// Pokazanie formularza logowania
+document.getElementById('show-login').addEventListener('click', () => {
+    loginForm.style.display = 'block';
+    registerForm.style.display = 'none';
+});
+
+// Funkcja logowania po załadowaniu strony (jeśli użytkownik jest już zalogowany)
+firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+        console.log('Użytkownik zalogowany: ', user.email);
+        startGame();  // Uruchamiamy grę po zalogowaniu
+    } else {
+        console.log('Brak zalogowanego użytkownika');
+    }
+});
+
