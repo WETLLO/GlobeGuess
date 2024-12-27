@@ -11,6 +11,22 @@
     <script src="https://www.gstatic.com/firebasejs/9.19.1/firebase-firestore.js"></script>
 </head>
 <body>
+    <div id="login-form">
+    <h2>Logowanie</h2>
+    <input type="email" id="login-email" placeholder="Email">
+    <input type="password" id="login-password" placeholder="Hasło">
+    <button id="login-button">Zaloguj się</button>
+    <p>Nie masz konta? <span id="show-register">Zarejestruj się</span></p>
+</div>
+
+<!-- Formularz rejestracji -->
+<div id="register-form" style="display: none;">
+    <h2>Rejestracja</h2>
+    <input type="email" id="register-email" placeholder="Email">
+    <input type="password" id="register-password" placeholder="Hasło">
+    <button id="register-button">Zarejestruj się</button>
+    <p>Masz już konto? <span id="show-login">Zaloguj się</span></p>
+</div>
     <h1>GlobeGuess</h1>
     <div id="country-hint"></div>
     <div class="game-container">
