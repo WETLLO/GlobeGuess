@@ -1327,3 +1327,67 @@ firebase.auth().onAuthStateChanged((user) => {
     }
 });
 
+const saveUserData = (userId, correctAnswers) => {
+    firestore.collection('users').doc(userId).set({
+        correctAnswers: correctAnswers
+    }, { merge: true }); // merge: true umożliwia dodanie nowych danych bez nadpisywania całego dokumentu
+};
+
+firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+        const userId = user.uid;
+        console.log(`Zalogowano użytkownika: ${userId}`);
+        // Możesz tutaj załadować dane użytkownika z Firestore, np. jego statystyki
+    } else {
+        console.log("Brak zalogowanego użytkownika");
+    }
+});
+
+// Przykład zapisania poprawnych odpowiedzi po zakończeniu gry
+if (userId) {
+    saveUserData(userId, correctAnswers); // Tutaj 'correctAnswers' to zmienna z liczbą poprawnych odpowiedzi
+}
+const checkGuess = () => {
+    const guess = inputField.value.trim();
+    if (!guess) {
+        feedback.textContent = 'Wpisz nazwę kraju!';
+        feedback.style.color = 'orange';
+        return;
+    }
+
+    if (guess === randomCountry) {
+        feedback.textContent = `Brawo! Odgadłeś kraj: ${randomCountry}.`;
+        feedback.style.color = 'green';
+
+        // Zapisz dane użytkownika, gdy odgadnie kraj
+        const userId = firebase.auth().currentUser ? firebase.auth().currentUser.uid : null;
+        if (userId) {
+            saveUserData(userId, correctAnswers); // Przykładowa liczba poprawnych odpowiedzi
+        }
+
+        restartButton.style.display = 'inline-block';
+        return;
+    }
+
+    attempts--;
+    currentHintIndex++;
+
+    // Dodaj literę do wskazówki przy każdej niepoprawnej odpowiedzi
+    if (currentHintIndex <= randomCountry.length) {
+        countryHint.textContent = randomCountry.slice(0, currentHintIndex) + "_".repeat(randomCountry.length - currentHintIndex);
+    }
+
+    if (attempts > 0) {
+        feedback.textContent = `Niepoprawne. Pozostało prób: ${attempts}.`;
+        feedback.style.color = 'red';
+        if (currentHintIndex < hints.length) {
+            updateHint();
+        }
+    } else {
+        feedback.textContent = `Koniec prób! Szukany kraj to: ${randomCountry}.`;
+        feedback.style.color = 'red';
+        restartButton.style.display = 'inline-block';
+    }
+
+    inputField.value = '';
+};
