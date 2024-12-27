@@ -96,7 +96,7 @@
         <div id="feedback"></div>
     </div>
     <a id="discord-button" href="https://discord.gg/pdNa4qtNk5" target="_blank">Dołącz do naszego Discorda o tematyce gry AoH3 (trwa konkurs na grę Hearts Of Iron IV)</a>
-
+	
     <script>
  const countriesData = {
     "Polska": {
@@ -1299,7 +1299,7 @@
             countryHint.textContent = "_".repeat(randomCountry.length);  // Create a hint with underscores for each letter
         };
 
-        document.getElementById('submit-button').addEventListener('click', () => {
+        const checkGuess = () => {
             const guess = inputField.value.trim();
             if (!guess) {
                 feedback.textContent = 'Wpisz nazwę kraju!';
@@ -1335,6 +1335,15 @@
             }
 
             inputField.value = '';
+        };
+
+        document.getElementById('submit-button').addEventListener('click', checkGuess);
+
+        // Obsługa Entera
+        inputField.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                checkGuess();
+            }
         });
 
         restartButton.addEventListener('click', startGame);
